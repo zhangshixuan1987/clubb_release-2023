@@ -834,6 +834,8 @@ module clubb_driver
       l_smooth_Heaviside_tau_wpxp,  & ! Use smoothed Heaviside 'Preskin' function
                                       ! in the calculation of H_invrs_tau_wpxp_N2
                                       ! in src/CLUBB_core/mixing_length.F90
+      l_limiter_setup_for_cnvg_test,& ! Flag to activate modifications on limiters that 
+                                      ! can improve the solution convergence 
       l_enable_relaxed_clipping,    & ! Flag to relax clipping on wpxp in
                                       ! xm_wpxp_clipping_and_stats
       l_linearize_pbl_winds,        & ! Code to linearize PBL winds
@@ -868,8 +870,8 @@ module clubb_driver
       sclr_tol, sclr_dim, iisclr_thl, iisclr_rt, iisclr_CO2, &
       edsclr_dim, iiedsclr_thl, iiedsclr_rt, iiedsclr_CO2, &
       l_rtm_nudge, rtm_min, rtm_nudge_max_altitude, &
-      l_diagnose_correlations, l_calc_w_corr
-
+      l_diagnose_correlations, l_calc_w_corr, & 
+      l_limiter_setup_for_cnvg_test
 
     namelist /stats_setting/ &
       l_stats, fname_prefix, stats_tsamp, stats_tout, stats_fmt, &
@@ -1052,6 +1054,7 @@ module clubb_driver
                                          l_use_tke_in_wp3_pr_turb_term, & ! Intent(out)
                                          l_use_tke_in_wp2_wp3_K_dfsn, & ! Intent(out)
                                          l_smooth_Heaviside_tau_wpxp, & ! Intent(out)
+                                         l_limiter_setup_for_cnvg_test, & ! Intent(out)
                                          l_enable_relaxed_clipping, & ! Intent(out)
                                          l_linearize_pbl_winds, & ! Intent(out)
                                          l_mono_flux_lim_thlm, & ! Intent(out)
@@ -1229,6 +1232,9 @@ module clubb_driver
       call write_text( "l_t_dependent = ", l_t_dependent, l_write_to_file, iunit )
       call write_text( "l_ignore_forcings = ", l_ignore_forcings, l_write_to_file, iunit )
       call write_text( "l_input_xpwp_sfc = ", l_input_xpwp_sfc, l_write_to_file, iunit )
+
+      call write_text( "l_limiter_setup_for_cnvg_test = ", l_limiter_setup_for_cnvg_test, &
+        l_write_to_file, iunit )
 
       call write_text( "saturation_formula = " // saturation_formula, &
         l_write_to_file, iunit )
@@ -2367,6 +2373,7 @@ module clubb_driver
                dummy_dx, dummy_dy, &                                                ! Intent(in)
                params, nu_vert_res_dep, lmin, &                                     ! Intent(in)
                clubb_config_flags, &                                                ! Intent(in)
+               l_limiter_setup_for_cnvg_test, &                                     ! Intent(in) 
                stats_zt, stats_zm, stats_sfc, &                                     ! intent(inout)
                um, vm, upwp, vpwp, up2, vp2, up3, vp3, &                            ! Intent(inout)
                thlm(1,:), rtm(1,:), wprtp, wpthlp, &                                ! Intent(inout)
@@ -2416,6 +2423,7 @@ module clubb_driver
                dummy_dx, dummy_dy, &                                                ! Intent(in)
                params, nu_vert_res_dep, lmin, &                                     ! Intent(in)
                clubb_config_flags, &                                                ! Intent(in)
+               l_limiter_setup_for_cnvg_test, &                                     ! Intent(in) 
                stats_zt, stats_zm, stats_sfc, &                                     ! intent(inout)
                um, vm, upwp, vpwp, up2, vp2, up3, vp3, &                            ! Intent(inout)
                thlm(1,:), rtm(1,:), wprtp, wpthlp, &                                ! Intent(inout)
@@ -6078,6 +6086,7 @@ module clubb_driver
     host_dx, host_dy, &                                     ! intent(in)
     clubb_params, nu_vert_res_dep, lmin, &                  ! intent(in)
     clubb_config_flags, &                                   ! intent(in)
+    l_limiter_setup_for_cnvg_test, &                        ! intent (in)
     stats_zt, stats_zm, stats_sfc, &                        ! intent(inout)
     um, vm, upwp, vpwp, up2, vp2, up3, vp3, &               ! intent(inout)
     thlm, rtm, wprtp, wpthlp, &                             ! intent(inout)
@@ -6231,6 +6240,10 @@ module clubb_driver
     logical, intent(in) ::  &
       l_prescribed_avg_deltaz, &
       l_implemented ! Is this part of a larger host model (T/F) ?
+
+    logical, intent(in) ::  &
+      l_limiter_setup_for_cnvg_test ! Flag to activate modifications on limiters that 
+                                    ! can improve the solution convergence 
 
     real( kind = core_rknd ), intent(in) ::  &
       dt  ! Current timestep duration    [s]
@@ -7029,6 +7042,7 @@ module clubb_driver
       host_dx_col, host_dy_col,                                                 & ! intent(in)
       clubb_params, nu_vert_res_dep_col, lmin_col,                              & ! intent(in)
       clubb_config_flags,                                                       & ! intent(in)
+      l_limiter_setup_for_cnvg_test,                                            & ! intent(in)
       stats_zt_col, stats_zm_col, stats_sfc_col,                                & ! intent(inout)
       um_col, vm_col, upwp_col, vpwp_col, up2_col, vp2_col, up3_col, vp3_col,   & ! intent(inout)
       thlm_col, rtm_col, wprtp_col, wpthlp_col,                                 & ! intent(inout)

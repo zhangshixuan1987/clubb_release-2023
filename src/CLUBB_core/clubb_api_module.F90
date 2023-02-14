@@ -588,6 +588,7 @@ contains
     host_dx, host_dy, &                                     ! intent(in)
     clubb_params, nu_vert_res_dep, lmin, &                  ! intent(in)
     clubb_config_flags, &                                   ! intent(in)
+    l_limiter_setup_for_cnvg_test, &                        ! intent(in)
     stats_zt, stats_zm, stats_sfc, &                        ! intent(inout)
     um, vm, upwp, vpwp, up2, vp2, up3, vp3, &               ! intent(inout)
     thlm, rtm, wprtp, wpthlp, &                             ! intent(inout)
@@ -650,6 +651,10 @@ contains
       !!! Input Variables
     logical, intent(in) ::  &
       l_implemented ! Is this part of a larger host model (T/F) ?
+
+    logical, intent(in) ::  &
+      l_limiter_setup_for_cnvg_test ! Flag to activate modifications on limiters that 
+                                    ! can improve the solution convergence 
 
     real( kind = core_rknd ), intent(in) ::  &
       dt  ! Current timestep duration    [s]
@@ -1225,6 +1230,7 @@ contains
       host_dx_col, host_dy_col, &                                     ! intent(in)
       clubb_params, nu_vert_res_dep, lmin, &                  ! intent(in)
       clubb_config_flags, &                                   ! intent(in)
+      l_limiter_setup_for_cnvg_test, &                        ! intent(in)
       stats_zt_col, stats_zm_col, stats_sfc_col, &                        ! intent(inout)
       um_col, vm_col, upwp_col, vpwp_col, up2_col, vp2_col, up3_col, vp3_col, &               ! intent(inout)
       thlm_col, rtm_col, wprtp_col, wpthlp_col, &                             ! intent(inout)
@@ -1365,6 +1371,7 @@ contains
     host_dx, host_dy, &                                     ! intent(in)
     clubb_params, nu_vert_res_dep, lmin, &                  ! intent(in)
     clubb_config_flags, &                                   ! intent(in)
+    l_limiter_setup_for_cnvg_test, &                        ! intent(in) 
     stats_zt, stats_zm, stats_sfc, &                        ! intent(inout)
     um, vm, upwp, vpwp, up2, vp2, up3, vp3, &               ! intent(inout)
     thlm, rtm, wprtp, wpthlp, &                             ! intent(inout)
@@ -1424,6 +1431,10 @@ contains
       !!! Input Variables
     logical, intent(in) ::  &
       l_implemented ! Is this part of a larger host model (T/F) ?
+
+    logical, intent(in) ::  &
+      l_limiter_setup_for_cnvg_test ! Flag to activate modifications on limiters that 
+                                    ! can improve the solution convergence 
 
     real( kind = core_rknd ), intent(in) ::  &
       dt  ! Current timestep duration    [s]
@@ -1664,6 +1675,7 @@ contains
       host_dx, host_dy, &                                     ! intent(in)
       clubb_params, nu_vert_res_dep, lmin, &                  ! intent(in)
       clubb_config_flags, &                                   ! intent(in)
+      l_limiter_setup_for_cnvg_test, &                        ! intent(in)
       stats_zt, stats_zm, stats_sfc, &                        ! intent(inout)
       um, vm, upwp, vpwp, up2, vp2, up3, vp3, &               ! intent(inout)
       thlm, rtm, wprtp, wpthlp, &                             ! intent(inout)
@@ -4528,6 +4540,7 @@ contains
                                                  l_use_tke_in_wp3_pr_turb_term, & ! Out
                                                  l_use_tke_in_wp2_wp3_K_dfsn, & ! Out
                                                  l_smooth_Heaviside_tau_wpxp, & ! Out
+                                                 l_limiter_setup_for_cnvg_test, & ! Out  
                                                  l_enable_relaxed_clipping, & ! Out
                                                  l_linearize_pbl_winds, & ! Out
                                                  l_mono_flux_lim_thlm, & ! Out
@@ -4657,6 +4670,8 @@ contains
       l_smooth_Heaviside_tau_wpxp,  & ! Use smoothed Heaviside 'Peskin' function
                                       ! in the calculation of H_invrs_tau_wpxp_N2
                                       ! in src/CLUBB_core/mixing_length.F90
+      l_limiter_setup_for_cnvg_test,& ! Flag to activate modifications on limiters that 
+                                      ! can improve the solution convergence 
       l_enable_relaxed_clipping,    & ! Flag to relax clipping on wpxp
                                       ! in xm_wpxp_clipping_and_stats
       l_linearize_pbl_winds,        & ! Code to linearize PBL winds
@@ -4716,6 +4731,7 @@ contains
                                          l_use_tke_in_wp3_pr_turb_term, & ! Out
                                          l_use_tke_in_wp2_wp3_K_dfsn, & ! Out
                                          l_smooth_Heaviside_tau_wpxp, & ! Out
+                                         l_limiter_setup_for_cnvg_test, & ! Out 
                                          l_enable_relaxed_clipping, & ! Out
                                          l_linearize_pbl_winds, & ! Out
                                          l_mono_flux_lim_thlm, & ! Out
