@@ -1,0 +1,93 @@
+commit b89e73662a3a008cfd8a9790afb7fbeb777dc871
+Author: cernikt <tjcernik@uwm.edu>
+Date:   Sun Apr 23 14:31:50 2023 -0500
+
+    this is another commit that cahnges nothing that will trigger the gitUpdate scripts
+
+commit 5af7321c1c5daa335bb93a2c3cd50076fbdce418
+Author: cernikt <tjcernik@uwm.edu>
+Date:   Sun Apr 23 14:17:42 2023 -0500
+
+    Fixing an error with the autocommit_update script that was causing it new works
+
+commit e66210ad86254314f1855beee0fa43f947ce4754
+Author: cernikt <tjcernik@uwm.edu>
+Date:   Sun Apr 23 13:14:27 2023 -0500
+
+    This commit is a commit that changes absolutely nothing. It is meant to trigger a change in the git update scripts, so that I can start the commit message logging in the autocommit updates larson-group/sys_admin#797
+
+commit b055635bf6f3c6f7fe8399e15d019a0c88d30164
+Merge: 3d6022f3f 4205f9567
+Author: cernikt <tjcernik@uwm.edu>
+Date:   Sun Apr 23 13:08:43 2023 -0500
+
+    Merge branch 'master' of https://github.com/larson-group/clubb
+
+commit 4205f9567c8864f9caa6d8d20286543b490db428
+Author: huebleruwm <37674341+huebleruwm@users.noreply.github.com>
+Date:   Fri Apr 21 14:25:40 2023 -0500
+
+    GPUizing Various Small Routines (#1080)
+    
+    * GPUizing compute_Cx_fnc_Richardson
+    
+    * GPUizing term_wp2_splat and term_wp3_splat
+    
+    * GPUizing xp3_LG_2005_ansatz
+    
+    * GPUizing calculate_thvm
+    
+    * GPUizing pvertinterp even though I don't think we care about the l_do_expldiff_rtm_thlm flag
+    
+    * Fixing bug. Setting l_do_expldiff_rtm_thlm causes us to use edsclrm, so we need to also ensure that edsclrm > 1 (1 because it uses a edsclr_dim-1 index)
+    
+    * Pushing some data statements up the call tree.
+
+commit 7eb659d596d4c75f2da95a56428657ed23fb41e5
+Author: bmg929 <bmg2@uwm.edu>
+Date:   Thu Apr 20 12:19:36 2023 -0500
+
+    Added a new file to compile CLUBB on Anvil.
+
+commit e7911cd16198153e0a3ca084bd813c0dfad1b4eb
+Author: huebler <huebler@uwm.edu>
+Date:   Wed Apr 19 12:53:38 2023 -0500
+
+    gfortran does not like intent(out) specifiers for functions.
+
+commit a883cf53b5eff3476a2c5e65dcd5a4093417ff18
+Author: huebleruwm <37674341+huebleruwm@users.noreply.github.com>
+Date:   Wed Apr 19 12:20:58 2023 -0500
+
+    Lscale GPUization (#1079)
+    
+    * Making 2 new functions zm2zt2zm and zt2zm2zt to handle smoothing by interpolation. Replaced the spots in clubb I know that uses this to smooth things. This is just a nice to have and could allow for easy optimizations in the future by inlining the interpolations. All cases BFB on CPU and GPU, checked all relevant options too.
+    
+    * GPUizing diagnose_Lscale_from_tau
+    
+    * Removing some unused variables.
+    
+    * Moving acc data statements from calc_Lscale_directly up to advance_clubb_core.
+    
+    * Removing an unused variable.
+    
+    * GPUizing the l_smooth_min_max option.
+    
+    * GPUizing l_avg_Lscale
+    
+    * Changes to variable names to avoid gross long names only used once.
+
+commit 8a363ab37d55bdf013003146409bd7802beda57d
+Merge: 4f762ff29 0eca21462
+Author: bmg929 <bmg2@uwm.edu>
+Date:   Mon Apr 17 10:44:29 2023 -0500
+
+    Merge branch 'master' of github.com:larson-group/clubb
+
+commit 4f762ff2971a094b45b591719bc9e28d3de9d06b
+Author: bmg929 <bmg2@uwm.edu>
+Date:   Mon Apr 17 10:43:22 2023 -0500
+
+    update the scripts for convergence test
+    
+    Originally committed by Shixuan.
